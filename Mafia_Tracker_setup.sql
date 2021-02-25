@@ -1,10 +1,3 @@
-SET FOREIGN_KEY_CHECKS = 0;
-DROP TABLE IF EXISTS bsg_planets;
-DROP TABLE IF EXISTS bsg_people;
-SET FOREIGN_KEY_CHECKS = 1;
-
-
-
 CREATE TABLE `Families` (
     `familyID` int(11) NOT NULL AUTO_INCREMENT,
     `familyName` varchar(255) NOT NULL,
@@ -93,4 +86,4 @@ CREATE TABLE `LawsBrokenByIndividuals` (
 INSERT INTO `LawsBrokenByIndividuals` (`pairingID`, `lawID`, `individualID`, `count`) VALUES
 (1, 1, 2, 4),
 (2, 3, 3, 1),
-(3, 2, 8, 3); 
+(3, 2, 8, 3);
