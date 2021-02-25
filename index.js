@@ -19,5 +19,20 @@ app.listen(port, () => {
 
 // Business
 app.post('/businesses/create', (req, res) => {
-    db.query('');
+
+    const businessNameInput = req.body.businessNameInput;
+    const buildingNumberIndput = req.body.businessNameInput;
+    const streetInput = req.body.streetInput;
+    const cityInput = req.body.cityInput;
+    const stateInput = req.body.stateInput;
+    const zipInput = req.body.zipInput;
+
+    db.query('INSERT INTO `Businesses` (`businessName`, `buildingNumber`, `streetName`, `city`, `state`, `zip`) VALUES (?, ?, ?, ?, ?, ?);',
+        [businessNameInput, buildingNumberIndput, streetInput, cityInput, stateInput, zipInput],
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Business values successfully inserted!");
+        }
+    );
 });
