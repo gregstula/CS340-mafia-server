@@ -6,6 +6,11 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 
+var corsOptions = {
+    origin: 'https://gregstula.github.io',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+  }
+
 const db = mysql.createConnection({
     user: "bde25e105415bc",
     password: "9d786746",
@@ -46,6 +51,4 @@ app.post('/businesses/create', (req, res) => {
 
 
 app.get('/businesses/get', (req, res) => {
-
-
 });
