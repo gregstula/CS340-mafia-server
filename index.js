@@ -29,10 +29,12 @@ app.post('/businesses/create', (req, res) => {
 
     db.query('INSERT INTO `Businesses` (`businessName`, `buildingNumber`, `streetName`, `city`, `state`, `zip`) VALUES (?, ?, ?, ?, ?, ?);',
         [businessNameInput, buildingNumberIndput, streetInput, cityInput, stateInput, zipInput],
+        (err, res) => {
         if (err) {
             console.log(err);
         } else {
             res.send("Business values successfully inserted!");
         }
+    }
     );
 });
