@@ -45,7 +45,7 @@ CREATE TABLE `Businesses` (
     `city` varchar(255) DEFAULT NULL,
     `state` varchar(255) DEFAULT NULL,
     `zip` int(11) DEFAULT NULL,
-    `individualOwner` int(11) NOT NULL,
+    `individualOwner` int(11) NULL,
     `familyOwner` int(11) DEFAULT NULL,
     PRIMARY KEY (`businessID`),
     FOREIGN KEY (`individualOwner`) REFERENCES `Individuals` (`individualID`) ON DELETE RESTRICT ON UPDATE CASCADE,
