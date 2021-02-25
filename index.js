@@ -38,7 +38,7 @@ app.post('/businesses/create', (req, res) => {
     const zipInput = req.body.zipInput;
 
     db.query('INSERT INTO `Businesses` (`businessName`, `buildingNumber`, `streetName`, `city`, `state`, `zip`) VALUES (?, ?, ?, ?, ?, ?);',
-        [businessNameInput, buildingNumberIndput, streetInput, cityInput, stateInput, zipInput],
+        [businessNameInput, buildingNumberInput, streetInput, cityInput, stateInput, zipInput],
         (err, res) => {
             if (err) {
                 console.log(err);
