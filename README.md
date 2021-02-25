@@ -3,4 +3,5 @@
 Express JS Server dolpyed to heroku connected to a MySQL database
 
 To test locally run 'node index.js' or 'npm start'
+
 Local port is 8000
