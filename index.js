@@ -38,3 +38,9 @@ app.post('/businesses/create', (req, res) => {
         }
     );
 });
+
+
+app.get('/businesses/get', (req, res) => {
+
+
+});

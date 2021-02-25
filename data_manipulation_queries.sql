@@ -2,86 +2,106 @@ SELECT * FROM Families;
 
 --SELECT
 --search individuals
--- colon denotes variables when nodeJS processes it
+-- colon denotes variables when nodeJS mysql module processes it
 SELECT * FROM Individuals 
-WHERE firstName = :firstNameInput AND lastName = :lastNameInput;
+WHERE firstName = ? AND lastName = ?;
+-- [firstNameInput, lastNameInput]
 
 --search businesses
 SELECT * FROM Businesses
-WHERE name = :nameInput;
+WHERE name = ?;
+-- [nameInput]
 
 --search laws
 SELECT * from Laws
-WHERE lawName = :lawNameInput;
+WHERE lawName = ?;
+-- [lawNameInput]
 
 --INSERT
 --add family
 INSERT INTO `Families` (`familyName`) VALUES
-(:familyNameInput)
+(?)
+-- [familyNameInput]
 
 --add individual
 INSERT INTO `Individuals` (`firstName`, `lastName`, `age`) VALUES
-(:fistNameInput, :lastNameInput, :ageInput);
+(?, ?, ?);
+-- [fistNameInput, lastNameInput, ageInput]
+
 --add business
 INSERT INTO `Businesses` (`businessName`, `buildingNumber`, `streetName`, `city`, `state`, `zip`) VALUES
-(:businessNameInput, :buildingNumberInput, :streetInput, :cityInput, :stateInput, :zipInput);
+(?, ?, ?, ?, ?, ?);
+-- [businessNameInput, buildingNumberInput, streetInput, cityInput, stateInput, zipInput)]
 
 --add law
 INSERT INTO `Laws` (`lawName`, `sentence`) VALUES
-(:lawNameInput, :sentenceInput);
+(?, ?);
+-- [lawNameInput, sentenceInput]
 
 --add individual to family
 UPDATE Individuals 
-SET mafiaFamily = :familyID, mafiaRole = :roleInput
-WHERE individualId = :individualIDInput;
+SET mafiaFamily = ?, mafiaRole = ?
+WHERE individualId = ?;
+--[familyID, roleInput, individualID]
 
 --add that a particular individual broke a particular law a number of times (assuming that that individual hasn't broken that law before)
 --add row to LawsBrokenByIndividual table
 INSERT INTO `LawsBrokenByIndividuals` (`lawID`, `individualID`, `count`) VALUES 
-((SELECT lawID FROM Laws WHERE lawName = :lawNameInput), (SELECT individualID FROM Individuals WHERE firstName = :firstNameInput AND lastName = :lastNameInput), 1);
+((SELECT lawID FROM Laws WHERE lawName = ?), (SELECT individualID FROM Individuals WHERE firstName = ? AND lastName = ?), 1); 
+-- [lawNameInput, firstNameInput, lastNameInput]
 
 
 --REMOVE
 --remove family
-DELETE FROM Families WHERE familyID = :familyIDInput;
+DELETE FROM Families WHERE familyID = ?;
+-- [familyID]
 
 --remove individual
-DELETE FROM Individuals WHERE individualID = :individualIDInput;
+DELETE FROM Individuals WHERE individualID = ?;
+-- [individualID]
 
 --remove business
-DELETE FROM Businesses WHERE businessID = :businessIDInput;
+DELETE FROM Businesses WHERE businessID = ?;
+--[businessID]
 
 --remove law
-DELETE FROM Laws WHERE lawID = :lawIDInput
+DELETE FROM Laws WHERE lawID = ?;
+-- [lawID]
 
 --UPDATE
 --update family
 UPDATE Families
-SET familyName = :newFamilyName
-WHERE familyId = :familyIDInput;
+SET familyName = :?
+WHERE familyId = ?;
+-- [newFamilyName, familyID]
 
 --update individual
 UPDATE Individuals
-SET firstName = :newFirstName, lastName = :newLastName, age = :newAge, mafiaFamily = :newMafiaFamily, mafiaRole = :newMafiaRole
-WHERE individualID =:individualIDInput;
+SET firstName = ?, lastName = ?, age = ?, mafiaFamily = ?, mafiaRole = ?
+WHERE individualID = ?;
+-- [newFirstName, newLastName, newAge, newMafiaFamily, newMafiaRole, individualID]
 
 --update business
 UPDATE Businesses
-SET businessName = :newbusinessName, buildingNumber = :newBuildingNumber, streetName = :newStreetName, city = :newCity, state = :newState, zip = :newZip, individualOwner = :newIndividualOwner, familyOwner = :newFamilyOwner
-WHERE businessID =:businessIDInput;
+SET businessName = ?, buildingNumber = ?, streetName = ?, city = ?, state = ?, zip = ?, individualOwner = ?, familyOwner = ?
+WHERE businessID = ?;
+-- [newBusinessName, newBuildingNumber, newStreetName, newCity, newState, newZip, newIndividualOwner, newFamilyOwner, businessID]
 
 --change business individual owner
 UPDATE Businesses
-SET individualOwner = :newIndividualOwner
-WHERE businessID = :businessIDInput;
+SET individualOwner = ?
+WHERE businessID = ?;
+-- [newIndividualOwner, businessID]
 
 --change (or add) mafia owner
 UPDATE Businesses
-SET familyOwner = :newFamilyOwner
-WHERE businessID = :businessIDInput;
+SET familyOwner = ?;
+WHERE businessID = ?;
+-- [newFamilyOwner, businessID]
 
 --update law
 UPDATE Laws
-SET lawName = :newLawName, sentence = :newSentence
-WHERE lawID = :lawIDInput;
+SET lawName = ?, sentence = ?
+WHERE lawID = ?;
+-- [newLawName, newSentence, lawID]
 
