@@ -18,7 +18,7 @@ const db = mysql.createConnection({
     database: "heroku_da400718f3a8859"
 });
 
-db.on("error", (err) {
+db.on("error", (err) => {
     console.log('Server error: ' + err.toString());
 });
 
