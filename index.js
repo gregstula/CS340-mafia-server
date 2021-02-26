@@ -39,7 +39,7 @@ app.post('/businesses/create', (req, res) => {
 
     db.query('INSERT INTO `Businesses` (`businessName`, `buildingNumber`, `streetName`, `city`, `state`, `zip`) VALUES (?, ?, ?, ?, ?, ?);',
         [businessNameInput, buildingNumberInput, streetInput, cityInput, stateInput, zipInput],
-        (err, res) => {
+        (err, result) => {
             if (err) {
                 console.log(err);
             } else {
@@ -50,5 +50,12 @@ app.post('/businesses/create', (req, res) => {
 });
 
 
-app.get('/businesses/get', (req, res) => {
+app.get('/businesses', (req, res) => {
+    db.query('select * from Businesses', (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    })
 });
