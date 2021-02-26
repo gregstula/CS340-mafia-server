@@ -79,6 +79,13 @@ app.get('/businesses', (req, res) => {
 app.put('/businesses/update/:id', (req, res) => {
     const {businessName, buildingNumber, streetName, city, state, zip} = req.body;
     const id = req.params.id;
-    db.query('UPDATE Businesses SET businessName = ?, buildingNumber = ?, streetName = ?, city = ?, state = ?, zip = ? WHERE businessID = ?; '),
-    [businessName, buildingNumber, streetName, city, state, zip, id]
+    db.query('UPDATE Businesses SET businessName = ?, buildingNumber = ?, streetName = ?, city = ?, state = ?, zip = ? WHERE businessID = ?;',
+    [businessName, buildingNumber, streetName, city, state, zip, id],
+    (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Business updated successfully!");
+        }
+    });
 });
