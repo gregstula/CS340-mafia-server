@@ -34,15 +34,15 @@ app.listen(port, () => {
 // Business
 app.post('/businesses/create', (req, res) => {
 
-    const businessNameInput = req.body.businessNameInput;
-    const buildingNumberInput = req.body.buildingNumberInput;
-    const streetInput = req.body.streetInput;
-    const cityInput = req.body.cityInput;
-    const stateInput = req.body.stateInput;
-    const zipInput = req.body.zipInput;
+    const businessName = req.body.businessName;
+    couildingNumberInput = req.buildingNumberInput;
+    const streetName = req.body.streetName;
+    const city = req.body.city;
+    const state = req.body.state;
+    const zip = req.body.zip;
 
     db.query('INSERT INTO `Businesses` (`businessName`, `buildingNumber`, `streetName`, `city`, `state`, `zip`) VALUES (?, ?, ?, ?, ?, ?);',
-        [businessNameInput, buildingNumberInput, streetInput, cityInput, stateInput, zipInput],
+        [businessName, buildingNumber, streetName, city, state, zip],
         (err, result) => {
             if (err) {
                 console.log(err);
@@ -73,5 +73,10 @@ app.get('/businesses', (req, res) => {
         } else {
             res.send(result);
         }
-    })
+    });
+});
+
+app.put('/businesses/:id', (req, res) => {
+    const id = req.params.id;
+    db.query('UPDATE SET businessName, buildingNumber, ')
 });
