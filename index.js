@@ -18,6 +18,10 @@ const db = mysql.createConnection({
     database: "heroku_da400718f3a8859"
 });
 
+db.on("error", (err) {
+    console.log('Server error: ' + err.toString());
+});
+
 let port = process.env.PORT;
 if (port == null || port == "") {
   port = 8000;
