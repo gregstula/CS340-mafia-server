@@ -11,7 +11,7 @@ var corsOptions = {
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
   }
 
-const db = mysql.createConnection({
+const db = mysql.createPool({
     user: "bde25e105415bc",
     password: "9d786746",
     host: "us-cdbr-east-03.cleardb.com",
