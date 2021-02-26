@@ -56,7 +56,7 @@ app.post('/businesses/create', (req, res) => {
 
 app.delete("businesses/delete/:id", (req, res) => {
   const id = req.params.id;
-  db.query("DELETE FROM Businesses WHERE id = ?", [id], (err, result) => {
+  db.query("DELETE FROM Businesses WHERE businessID = ?", [id], (err, result) => {
     if (err) {
       console.log(err);
     } else {
