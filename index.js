@@ -76,7 +76,7 @@ app.get('/businesses', (req, res) => {
     });
 });
 
-app.put('/businesses/:id', (req, res) => {
+app.put('/businesses/update/:id', (req, res) => {
     const {businessName, buildingNumber, streetName, city, state, zip} = req.body;
     const id = req.params.id;
     db.query('UPDATE Businesses SET businessName = ?, buildingNumber = ?, streetName = ?, city = ?, state = ?, zip = ? WHERE businessID = ?; '),
