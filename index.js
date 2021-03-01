@@ -34,13 +34,7 @@ app.listen(port, () => {
 // Business
 app.post('/businesses/create', (req, res) => {
 
-    const businessName = req.body.businessName;
-    const buildingNumber = req.buildingNumber;
-    const streetName = req.body.streetName;
-    const city = req.body.city;
-    const state = req.body.state;
-    const zip = req.body.zip;
-
+    const {businessName, buildingNumber, streetName, city, state, zip} = req.body;
     db.query('INSERT INTO `Businesses` (`businessName`, `buildingNumber`, `streetName`, `city`, `state`, `zip`) VALUES (?, ?, ?, ?, ?, ?);',
         [businessName, buildingNumber, streetName, city, state, zip],
         (err, result) => {
