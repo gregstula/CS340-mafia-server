@@ -35,7 +35,7 @@ app.listen(port, () => {
 app.post('/businesses/create', (req, res) => {
 
     const businessName = req.body.businessName;
-    const buildingNumberInput = req.buildingNumberInput;
+    const buildingNumber = req.buildingNumberInput;
     const streetName = req.body.streetName;
     const city = req.body.city;
     const state = req.body.state;
