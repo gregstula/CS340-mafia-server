@@ -31,7 +31,32 @@ app.listen(port, () => {
     console.log("server works");
 });
 
-// Business
+
+// Individuals
+app.post('/individuals/create', (req, res) => {
+	console.log("creating individual");
+});
+
+app.get('/individuals', (req, res) => {
+	db.query('select * from Individuals', (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+});
+
+app.put('/individuals/update/:id', (req, res) => {
+	console.log("deleting individual");
+});
+
+app.delete('/individuals/delete/:id', (req, res) => {
+	console.log("updating individual");
+});
+
+
+// Businesses
 app.post('/businesses/create', (req, res) => {
 
     const {businessName, buildingNumber, streetName, city, state, zip} = req.body;
@@ -46,19 +71,6 @@ app.post('/businesses/create', (req, res) => {
         }
     );
 });
-
-
-app.delete("/businesses/delete/:id", (req, res) => {
-  const id = req.params.id;
-  db.query("DELETE FROM Businesses WHERE businessID = ?", id, (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send("Business deleted.");
-    }
-  });
-});
-
 
 app.get('/businesses', (req, res) => {
     db.query('select * from Businesses', (err, result) => {
@@ -82,4 +94,15 @@ app.put('/businesses/update/:id', (req, res) => {
             res.send("Business updated successfully!");
         }
     });
+});
+
+app.delete("/businesses/delete/:id", (req, res) => {
+  const id = req.params.id;
+  db.query("DELETE FROM Businesses WHERE businessID = ?", id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send("Business deleted.");
+    }
+  });
 });
