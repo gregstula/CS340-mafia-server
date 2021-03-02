@@ -34,7 +34,17 @@ app.listen(port, () => {
 
 // Individuals
 app.post('/individuals/create', (req, res) => {
-	console.log("creating individual");
+	const {firstName, lastName, age} = req.body;
+    db.query('INSERT INTO `Individuals` (`firstName`, `lastName`, `age`, `mafiaFamily`, `mafiaRole`) VALUES (?, ?, ?, NULL, NULL);',
+        [firstName, lastName, age],
+        (err, result) => {
+            if (err) {
+                console.log(err);
+            } else {
+                res.send("Individual successfully inserted!");
+            }
+        }
+    );
 });
 
 app.get('/individuals', (req, res) => {
@@ -48,11 +58,29 @@ app.get('/individuals', (req, res) => {
 });
 
 app.put('/individuals/update/:id', (req, res) => {
-	console.log("deleting individual");
+	const {firstName, lastName, age} = req.body;
+    const id = req.params.id;
+    db.query('UPDATE Individuals SET firstName = ?, lastName = ?, age = ? WHERE individualID = ?;',
+    [firstName, lastName, age, id],
+    (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send("Individual updated successfully!");
+        }
+    });
 });
 
 app.delete('/individuals/delete/:id', (req, res) => {
-	console.log("updating individual");
+  const id = req.params.id;
+  console.log("deleting individual where id = " + id);
+  db.query("DELETE FROM Individuals WHERE individualID = ?", id, (err, result) => {
+	if (err) {
+	  console.log(err);
+	} else {
+	  res.send("Individual deleted.");
+	}
+  });
 });
 
 
