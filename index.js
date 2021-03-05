@@ -57,6 +57,21 @@ app.get('/individuals', (req, res) => {
     });
 });
 
+//business subtable
+app.get('/individuals/getBusinesses/:id', (req, res) => {
+  console.log("yo");
+  db.query('SELECT businessName, buildingNumber, streetName, city, state, zip, familyOwner FROM Individuals INNER JOIN Businesses ON individualID = individualOwner WHERE individualID = ?;',
+    req.params.id,
+    (err, result) => {
+      if (err) {
+          console.log(err);
+      } else {
+          res.send(result);
+      }
+    }
+  );
+});
+
 app.put('/individuals/update/:id', (req, res) => {
 	const {firstName, lastName, age} = req.body;
     const id = req.params.id;
