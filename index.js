@@ -59,8 +59,7 @@ app.get('/individuals', (req, res) => {
 
 //business subtable
 app.get('/individuals/getBusinesses/:id', (req, res) => {
-  console.log("yo");
-  db.query('SELECT businessName, buildingNumber, streetName, city, state, zip, familyOwner FROM Individuals INNER JOIN Businesses ON individualID = individualOwner WHERE individualID = ?;',
+  db.query('SELECT businessID, businessName, buildingNumber, streetName, city, state, zip, familyOwner FROM Individuals INNER JOIN Businesses ON individualID = individualOwner WHERE individualID = ?;',
     req.params.id,
     (err, result) => {
       if (err) {
@@ -72,18 +71,32 @@ app.get('/individuals/getBusinesses/:id', (req, res) => {
   );
 });
 
+app.delete('/individuals/setBusinessOwnerToNull/:id', (req, res) => {
+  const id = req.params.id;
+  console.log("setting business " + id + "'s owner to null");
+  db.query('UPDATE Businesses SET individualOwner = null WHERE Businesses.businessID = ?;', id,
+    (err, result) => {
+      if(err)
+        console.log(err);
+      else
+        res.send("Business no longer has individual owner");
+    }
+  )
+});
+
 app.put('/individuals/update/:id', (req, res) => {
 	const {firstName, lastName, age} = req.body;
     const id = req.params.id;
     db.query('UPDATE Individuals SET firstName = ?, lastName = ?, age = ? WHERE individualID = ?;',
-    [firstName, lastName, age, id],
-    (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send("Individual updated successfully!");
-        }
-    });
+      [firstName, lastName, age, id],
+      (err, result) => {
+          if (err) {
+              console.log(err);
+          } else {
+              res.send("Individual updated successfully!");
+          }
+      }
+    );
 });
 
 app.delete('/individuals/delete/:id', (req, res) => {
