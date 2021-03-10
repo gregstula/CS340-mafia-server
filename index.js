@@ -71,6 +71,26 @@ app.get('/individuals/getBusinesses/:id', (req, res) => {
   );
 });
 
+app.get('/individuals/searchBusinesses/:searchInput', (req, res) => {
+  db.query('SELECT businessID, businessName, city, state FROM Businesses WHERE Businesses.businessName = ?', req.params.searchInput, (err, result) => {
+    if(err)
+      console.log(err);
+    else
+      res.send(result);
+  })
+})
+
+app.put('/individuals/setBusinessOwner/:bID/:pID', (req, res) => {
+  const busID = req.params.bID;
+  const perID = req.params.pID;
+  db.query('UPDATE Businesses SET individualOwner = ? WHERE Businesses.businessID = ?;', [perID, busID], (err, result) => {
+    if(err)
+      console.log(err);
+    else
+      res.send("individual owner set");
+  });
+});
+
 app.delete('/individuals/setBusinessOwnerToNull/:id', (req, res) => {
   const id = req.params.id;
   console.log("setting business " + id + "'s owner to null");
