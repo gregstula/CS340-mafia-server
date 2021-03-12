@@ -57,6 +57,33 @@ app.get('/individuals', (req, res) => {
     });
 });
 
+app.put('/individuals/update/:id', (req, res) => {
+	const {firstName, lastName, age} = req.body;
+    const id = req.params.id;
+    db.query('UPDATE Individuals SET firstName = ?, lastName = ?, age = ? WHERE individualID = ?;',
+      [firstName, lastName, age, id],
+      (err, result) => {
+          if (err) {
+              console.log(err);
+          } else {
+              res.send("Individual updated successfully!");
+          }
+      }
+    );
+});
+
+app.delete('/individuals/delete/:id', (req, res) => {
+  const id = req.params.id;
+  console.log("deleting individual where id = " + id);
+  db.query("DELETE FROM Individuals WHERE individualID = ?", id, (err, result) => {
+	if (err) {
+	  console.log(err);
+	} else {
+	  res.send("Individual deleted.");
+	}
+  });
+});
+
 //business subtable
 app.get('/individuals/getBusinesses/:id', (req, res) => {
   db.query('SELECT businessID, businessName, buildingNumber, streetName, city, state, zip, familyName FROM Businesses LEFT JOIN Individuals ON individualID = individualOwner LEFT JOIN Families ON familyOwner = familyID WHERE individualID = ?;',
@@ -91,7 +118,7 @@ app.put('/individuals/setBusinessOwner/:bID/:pID', (req, res) => {
   });
 });
 
-app.delete('/individuals/setBusinessOwnerToNull/:id', (req, res) => {
+app.put('/individuals/setBusinessOwnerToNull/:id', (req, res) => {
   const id = req.params.id;
   console.log("setting business " + id + "'s owner to null");
   db.query('UPDATE Businesses SET individualOwner = null WHERE Businesses.businessID = ?;', id,
@@ -104,33 +131,14 @@ app.delete('/individuals/setBusinessOwnerToNull/:id', (req, res) => {
   )
 });
 
-app.put('/individuals/update/:id', (req, res) => {
-	const {firstName, lastName, age} = req.body;
-    const id = req.params.id;
-    db.query('UPDATE Individuals SET firstName = ?, lastName = ?, age = ? WHERE individualID = ?;',
-      [firstName, lastName, age, id],
-      (err, result) => {
-          if (err) {
-              console.log(err);
-          } else {
-              res.send("Individual updated successfully!");
-          }
-      }
-    );
-});
-
-app.delete('/individuals/delete/:id', (req, res) => {
-  const id = req.params.id;
-  console.log("deleting individual where id = " + id);
-  db.query("DELETE FROM Individuals WHERE individualID = ?", id, (err, result) => {
-	if (err) {
-	  console.log(err);
-	} else {
-	  res.send("Individual deleted.");
-	}
-  });
-});
-
+//lawsBroken subtable
+// app.get('/individuals/getLawsBroken/:id', (req, res) => {});
+//
+// app.get('/individuals/searchLaws/:searchInput', (req, res) => {});
+//
+// app.put('/individuals/breakLaw/:lawID/:personID', (req, res) => {});
+//
+// app.delete('/individuals/unBreakLaw/:id', (req, res) => {});
 
 // Businesses
 app.post('/businesses/create', (req, res) => {
