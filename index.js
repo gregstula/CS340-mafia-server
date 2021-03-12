@@ -48,7 +48,7 @@ app.post('/individuals/create', (req, res) => {
 });
 
 app.get('/individuals', (req, res) => {
-	db.query('select * from Individuals', (err, result) => {
+	db.query('SELECT * FROM Individuals LEFT JOIN Families ON Individuals.mafiaFamily = Families.familyID', (err, result) => {
         if (err) {
             console.log(err);
         } else {
@@ -59,7 +59,7 @@ app.get('/individuals', (req, res) => {
 
 //business subtable
 app.get('/individuals/getBusinesses/:id', (req, res) => {
-  db.query('SELECT businessID, businessName, buildingNumber, streetName, city, state, zip, familyOwner FROM Individuals INNER JOIN Businesses ON individualID = individualOwner WHERE individualID = ?;',
+  db.query('SELECT businessID, businessName, buildingNumber, streetName, city, state, zip, familyName FROM Businesses LEFT JOIN Individuals ON individualID = individualOwner LEFT JOIN Families ON familyOwner = familyID WHERE individualID = ?;',
     req.params.id,
     (err, result) => {
       if (err) {
@@ -72,7 +72,7 @@ app.get('/individuals/getBusinesses/:id', (req, res) => {
 });
 
 app.get('/individuals/searchBusinesses/:searchInput', (req, res) => {
-  db.query('SELECT businessID, businessName, city, state FROM Businesses WHERE Businesses.businessName = ?', req.params.searchInput, (err, result) => {
+  db.query('SELECT businessID, businessName, city, state, firstName, lastName, familyName FROM Businesses LEFT JOIN Individuals ON individualOwner = individualID LEFT JOIN Families ON familyOwner = familyID WHERE Businesses.businessName LIKE ?', "%" + req.params.searchInput + "%", (err, result) => {
     if(err)
       console.log(err);
     else
