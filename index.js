@@ -74,13 +74,12 @@ app.put('/individuals/update/:id', (req, res) => {
 
 app.delete('/individuals/delete/:id', (req, res) => {
   const id = req.params.id;
-  console.log("deleting individual where id = " + id);
   db.query("DELETE FROM Individuals WHERE individualID = ?", id, (err, result) => {
-	if (err) {
-	  console.log(err);
-	} else {
-	  res.send("Individual deleted.");
-	}
+  	if (err) {
+  	  console.log(err);
+  	} else {
+  	  res.send("Individual deleted.");
+  	}
   });
 });
 
@@ -132,13 +131,58 @@ app.put('/individuals/setBusinessOwnerToNull/:id', (req, res) => {
 });
 
 //lawsBroken subtable
-// app.get('/individuals/getLawsBroken/:id', (req, res) => {});
-//
-// app.get('/individuals/searchLaws/:searchInput', (req, res) => {});
-//
-// app.put('/individuals/breakLaw/:lawID/:personID', (req, res) => {});
-//
-// app.delete('/individuals/unBreakLaw/:id', (req, res) => {});
+app.get('/individuals/getLawsBroken/:id', (req, res) => {
+  var query = 'SELECT Laws.lawID, lawName, sentence';
+  query += ' FROM Individuals';
+  query += ' INNER JOIN LawsBrokenByIndividuals ON LawsBrokenByIndividuals.individualID = Individuals.individualID';
+  query += ' INNER JOIN Laws ON LawsBrokenByIndividuals.lawID = Laws.lawID';
+  query += ' WHERE Individuals.individualID = ?;';
+  db.query(query,
+    req.params.id,
+    (err, result) => {
+      if (err) {
+          console.log(err);
+      } else {
+          res.send(result);
+      }
+    }
+  );
+});
+
+app.get('/individuals/searchLaws/:searchInput', (req, res) => {
+  var query = 'SELECT lawID, lawName, sentence';
+  query += ' FROM Laws';
+  query += ' WHERE lawName LIKE ?'
+  db.query(query, "%" + req.params.searchInput + "%", (err, result) => {
+    if(err)
+      console.log(err);
+    else
+      res.send(result);
+  })
+});
+
+app.put('/individuals/breakLaw/:lawID/:personID', (req, res) => {
+  const lawID = req.params.lawID;
+  const perID = req.params.personID;
+  db.query('INSERT LawsBrokenByIndividuals (`lawID`, `individualID`, `count`) VALUES (?, ?, 1);', [lawID, perID], (err, result) => {
+    if(err)
+      console.log(err);
+    else
+      res.send("made person break law");
+  });
+});
+
+app.delete('/individuals/unBreakLaw/:lawID/:personID', (req, res) => {
+  const lawID = req.params.lawID;
+  const perID = req.params.personID;
+  db.query("DELETE FROM LawsBrokenByIndividuals WHERE lawID = ? AND individualID = ?", [lawID, perID], (err, result) => {
+  	if (err) {
+  	  console.log(err);
+  	} else {
+  	  res.send("Individual declared not guilty of crime");
+  	}
+  });
+});
 
 // Businesses
 app.post('/businesses/create', (req, res) => {
