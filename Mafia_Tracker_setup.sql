@@ -48,7 +48,7 @@ CREATE TABLE `Businesses` (
     `individualOwner` int(11) NULL,
     `familyOwner` int(11) DEFAULT NULL,
     PRIMARY KEY (`businessID`),
-    FOREIGN KEY (`individualOwner`) REFERENCES `Individuals` (`individualID`) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (`individualOwner`) REFERENCES `Individuals` (`individualID`) ON DELETE SET NULL ON UPDATE CASCADE,
     FOREIGN KEY (`familyOwner`) REFERENCES `Families` (`familyID`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -79,8 +79,8 @@ CREATE TABLE `LawsBrokenByIndividuals` (
     `individualID` int(11) NOT NULL,
     `count` int(11) DEFAULT 0,
     PRIMARY KEY (`pairingID`),
-    FOREIGN KEY (`lawID`) REFERENCES `Laws` (`lawID`) ON DELETE RESTRICT ON UPDATE CASCADE,
-    FOREIGN KEY (`individualID`) REFERENCES `Individuals` (`individualID`) ON DELETE RESTRICT ON UPDATE CASCADE
+    FOREIGN KEY (`lawID`) REFERENCES `Laws` (`lawID`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (`individualID`) REFERENCES `Individuals` (`individualID`) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `LawsBrokenByIndividuals` (`pairingID`, `lawID`, `individualID`, `count`) VALUES

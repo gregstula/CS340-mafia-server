@@ -34,9 +34,9 @@ app.listen(port, () => {
 
 // Individuals
 app.post('/individuals/create', (req, res) => {
-	const {firstName, lastName, age} = req.body;
-    db.query('INSERT INTO `Individuals` (`firstName`, `lastName`, `age`, `mafiaFamily`, `mafiaRole`) VALUES (?, ?, ?, NULL, NULL);',
-        [firstName, lastName, age],
+	const {firstName, lastName, age, mafiaFamily, mafiaRole} = req.body;
+    db.query('INSERT INTO `Individuals` (`firstName`, `lastName`, `age`, `mafiaFamily`, `mafiaRole`) VALUES (?, ?, ?, (SELECT familyID FROM Families WHERE familyName = ?), ?);',
+        [firstName, lastName, age, mafiaFamily, mafiaRole],
         (err, result) => {
             if (err) {
                 console.log(err);
@@ -58,10 +58,10 @@ app.get('/individuals', (req, res) => {
 });
 
 app.put('/individuals/update/:id', (req, res) => {
-	const {firstName, lastName, age} = req.body;
+	const {firstName, lastName, age, mafiaFamily, mafiaRole} = req.body;
     const id = req.params.id;
-    db.query('UPDATE Individuals SET firstName = ?, lastName = ?, age = ? WHERE individualID = ?;',
-      [firstName, lastName, age, id],
+    db.query('UPDATE Individuals SET firstName = ?, lastName = ?, age = ?, mafiaFamily = (SELECT familyID FROM Families WHERE familyName = ?), mafiaRole = ? WHERE individualID = ?;',
+      [firstName, lastName, age, mafiaFamily, mafiaRole, id],
       (err, result) => {
           if (err) {
               console.log(err);
