@@ -57,6 +57,17 @@ app.get('/individuals', (req, res) => {
     });
 });
 
+app.get('/individuals/:searchTerm', (req, res) => {
+  var searchTerm = "%" + req.params.searchTerm + "%";
+  db.query('SELECT * FROM Individuals LEFT JOIN Families ON Individuals.mafiaFamily = Families.familyID WHERE firstName LIKE ? OR lastName LIKE ?', [searchTerm, searchTerm], (err, result) => {
+        if (err) {
+            console.log(err);
+        } else {
+            res.send(result);
+        }
+    });
+})
+
 app.put('/individuals/update/:id', (req, res) => {
 	const {firstName, lastName, age, mafiaFamily, mafiaRole} = req.body;
     const id = req.params.id;
