@@ -271,3 +271,30 @@ app.put('/families/update/:id', (req, res) => {
       }
     });
 });
+
+// Businesses
+app.post('/families/create', (req, res) => {
+
+  const { familyName } = req.body;
+  db.query('INSERT INTO `Families` (`familyName`) VALUES (?);',
+    [familyName],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send("Family values successfully inserted!");
+      }
+    }
+  );
+});
+
+app.delete("/families/delete/:id", (req, res) => {
+  const id = req.params.id;
+  db.query("DELETE FROM Families WHERE familyID = ?", id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send("Business deleted.");
+    }
+  });
+});
