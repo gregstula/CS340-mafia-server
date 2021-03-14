@@ -249,7 +249,7 @@ app.delete("/businesses/delete/:id", (req, res) => {
 
 // Families
 app.get('/families', (req, res) => {
-  db.query('select * from Families', (err, result) => {
+  db.query('select familyID, familyName, count(mafiaFamily) as memberCount from families left join individuals on familyID = individuals.mafiaFamily group by familyID;', (err, result) => {
       if (err) {
           console.log(err);
       } else {
