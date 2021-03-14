@@ -245,3 +245,15 @@ app.delete("/businesses/delete/:id", (req, res) => {
     }
   });
 });
+
+
+// Families
+app.get('/families', (req, res) => {
+  db.query('select * from Families', (err, result) => {
+      if (err) {
+          console.log(err);
+      } else {
+          res.send(result);
+      }
+  });
+});
