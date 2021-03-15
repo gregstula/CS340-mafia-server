@@ -342,11 +342,11 @@ app.post('/laws/create', (req, res) => {
 
 app.delete("/laws/delete/:id", (req, res) => {
   const id = req.params.id;
-  db.query("DELETE FROM Families WHERE lawID = ?", id, (err, result) => {
+  db.query("DELETE FROM Laws WHERE lawID = ?", id, (err, result) => {
     if (err) {
       console.log(err);
     } else {
-      res.send("Business deleted.");
+      res.send("Law deleted.");
     }
   });
 });
