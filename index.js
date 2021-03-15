@@ -313,7 +313,7 @@ app.get('/laws', (req, res) => {
 app.put('/laws/update/:id', (req, res) => {
   const { lawName, sentence } = req.body;
   const id = req.params.id;
-  db.query('UPDATE Families SET lawName = ?, sentence = ? where lawID = ?',
+  db.query('UPDATE Laws SET lawName = ?, sentence = ? where lawID = ?',
     [lawName, sentence, id],
     (err, result) => {
       if (err) {
