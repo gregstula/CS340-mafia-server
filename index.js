@@ -327,7 +327,7 @@ app.put('/laws/update/:id', (req, res) => {
 
 app.post('/laws/create', (req, res) => {
   const { lawName, sentence } = req.body;
-  db.query('INSERT INTO `Laws` (`lawName`, `sentence`) VALUES (?, ?);',
+  db.query('INSERT INTO Laws (lawName, sentence) VALUES (?, ?);',
     [lawName, sentence],
     (err, result) => {
       if (err) {
