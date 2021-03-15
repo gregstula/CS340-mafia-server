@@ -272,7 +272,6 @@ app.put('/families/update/:id', (req, res) => {
     });
 });
 
-// Businesses
 app.post('/families/create', (req, res) => {
 
   const { familyName } = req.body;
@@ -291,6 +290,59 @@ app.post('/families/create', (req, res) => {
 app.delete("/families/delete/:id", (req, res) => {
   const id = req.params.id;
   db.query("DELETE FROM Families WHERE familyID = ?", id, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send("Business deleted.");
+    }
+  });
+});
+
+
+// Laws
+app.get('/laws', (req, res) => {
+  db.query('select * from Laws;', (err, result) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(result);
+    }
+  });
+});
+
+app.put('/laws/update/:id', (req, res) => {
+  const { lawName, sentence } = req.body;
+  const id = req.params.id;
+  db.query('UPDATE Families SET lawName = ?, sentence = ? where lawID = ?',
+    [lawName, sentence, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send("Law updated successfully!");
+      }
+    });
+});
+
+
+app.post('/laws/create', (req, res) => {
+
+  const { lawName, sentence } = req.body;
+  db.query('INSERT INTO `Laws` (`lawName, sentence`) VALUES (?, ?);',
+    [lawName, sentence],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send("Law values successfully inserted!");
+      }
+    }
+  );
+});
+
+app.delete("/laws/delete/:id", (req, res) => {
+  const id = req.params.id;
+  db.query("DELETE FROM Families WHERE lawID = ?", id, (err, result) => {
     if (err) {
       console.log(err);
     } else {
