@@ -350,6 +350,61 @@ app.put('/families/removeMember/:id', (req, res) => {
   )
 });
 
+//businesses subtable
+app.get('/families/getBusinesses/:id', (req, res) => {
+  var query = 'SELECT *';
+  query += ' FROM Businesses';
+  query += ' LEFT JOIN Individuals ON individualID = individualOwner'
+  query += ' WHERE familyOwner = ?;';
+  db.query(query,
+    req.params.id,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get('/families/searchBusinesses/:searchInput', (req, res) => {
+  var query = 'SELECT Businesses.businessID, Businesses.businessName, Businesses.city, Businesses.state, Individuals.firstName, Individuals.lastName, Families.familyName';
+  query += ' FROM Businesses';
+  query += ' LEFT JOIN Families ON Businesses.familyOwner = Families.familyID';
+  query += ' LEFT JOIN Individuals ON Businesses.individualOwner = Individuals.individualID';
+  query += ' WHERE Businesses.businessName LIKE ?;';
+  db.query(query, "%" + req.params.searchInput + "%", (err, result) => {
+    if (err)
+      console.log(err);
+    else
+      res.send(result);
+  })
+});
+
+app.put('/families/addBusiness/:bID/:fID', (req, res) => {
+  const busID = req.params.bID;
+  const famID = req.params.fID;
+  db.query('UPDATE Businesses SET familyOwner = ? WHERE Businesses.businessID = ?;', [famID, busID], (err, result) => {
+    if (err)
+      console.log(err);
+    else
+      res.send("business now owned by family");
+  });
+});
+
+app.put('/families/removeBusiness/:id', (req, res) => {
+  const id = req.params.id;
+  db.query('UPDATE Businesses SET familyOwner = null WHERE Businesses.businessID = ?;', id,
+    (err, result) => {
+      if (err)
+        console.log(err);
+      else
+        res.send("business not protected by family");
+    }
+  )
+});
+
 
 // Laws
 app.get('/laws', (req, res) => {
