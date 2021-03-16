@@ -130,7 +130,6 @@ app.put('/individuals/setBusinessOwner/:bID/:pID', (req, res) => {
 
 app.put('/individuals/setBusinessOwnerToNull/:id', (req, res) => {
   const id = req.params.id;
-  console.log("setting business " + id + "'s owner to null");
   db.query('UPDATE Businesses SET individualOwner = null WHERE Businesses.businessID = ?;', id,
     (err, result) => {
       if (err)
@@ -296,6 +295,59 @@ app.delete("/families/delete/:id", (req, res) => {
       res.send("Family deleted.");
     }
   });
+});
+
+//members subtable
+app.get('/families/getMembers/:id', (req, res) => {
+  var query = 'SELECT Individuals.individualID, Individuals.firstName, Individuals.lastName, Individuals.age, Individuals.mafiaRole';
+  query += ' FROM Individuals';
+  query += ' WHERE Individuals.mafiaFamily = ?;';
+  db.query(query,
+    req.params.id,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+app.get('/families/searchPeople/:searchInput', (req, res) => {
+  var query = 'SELECT Individuals.individualID, Individuals.firstName, Individuals.lastName, Individuals.age, Families.familyName, Individuals.mafiaRole';
+  query += ' FROM Individuals';
+  query += ' LEFT JOIN Families ON Individuals.mafiaFamily = Families.familyID'
+  query += ' WHERE Individuals.firstName LIKE ? OR Individuals.lastName LIKE ?'
+  db.query(query, ["%" + req.params.searchInput + "%", "%" + req.params.searchInput + "%"], (err, result) => {
+    if (err)
+      console.log(err);
+    else
+      res.send(result);
+  })
+});
+
+app.put('/families/addMember/:pID/:fID', (req, res) => {
+  const perID = req.params.pID;
+  const famID = req.params.fID;
+  db.query('UPDATE Individuals SET mafiaFamily = ? WHERE Individuals.individualID = ?;', [famID, perID], (err, result) => {
+    if (err)
+      console.log(err);
+    else
+      res.send("person added to family");
+  });
+});
+
+app.put('/families/removeMember/:id', (req, res) => {
+  const id = req.params.id;
+  db.query('UPDATE Individuals SET mafiaFamily = null WHERE Individuals.individualID = ?;', id,
+    (err, result) => {
+      if (err)
+        console.log(err);
+      else
+        res.send("member kicked from family");
+    }
+  )
 });
 
 
